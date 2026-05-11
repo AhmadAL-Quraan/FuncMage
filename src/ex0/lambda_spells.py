@@ -1,12 +1,12 @@
-def artifact_sorter(artifacts: list[dict]) -> list[dict]:
+def artifact_sorter(
+    artifacts: list[dict[str, int | str]],
+) -> list[dict[str, int | str]]:
     return sorted(artifacts, key=lambda x: x["power"], reverse=True)
 
 
-def func(x: dict, min_power):
-    return x["power"] > min_power
-
-
-def power_filter(mages: list[dict], min_power: int) -> list[dict]:
+def power_filter(
+    mages: list[dict[str, int | str]], min_power: int
+) -> list[dict[str, int | str]]:
 
     return list(filter(lambda x: x["power"] > min_power, mages))
 
