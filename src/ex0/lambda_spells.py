@@ -8,7 +8,7 @@ def power_filter(
     mages: list[dict[str, int | str]], min_power: int
 ) -> list[dict[str, int | str]]:
 
-    return list(filter(lambda x: x["power"] > min_power, mages))
+    return list(filter(lambda x: int(x["power"]) > min_power, mages))
 
 
 # Map: Apply a function on iterable items and return map object -> iterable object
