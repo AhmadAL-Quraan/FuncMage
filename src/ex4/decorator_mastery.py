@@ -1,6 +1,7 @@
 from functools import wraps
 from typing import Callable
 import time
+from typing import Any
 
 
 # What is decorator in python ???????????????????????????///////// function -> take a function and return a function
@@ -26,7 +27,7 @@ def fireball() -> str:
 # A decorator factory: is an outter decorator that takes arguments to pass it to the actual one
 def power_validator(
     min_power: int,
-) -> Callable:
+) -> Callable[..., Any]:
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args) -> int | str:
