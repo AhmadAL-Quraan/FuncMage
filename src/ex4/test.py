@@ -1,21 +1,42 @@
-def repeat_message(times):
-    def decorator_repeat(func):
-        def wrapper(*args, **kwargs):
-            for _ in range(times):
-                func(*args, **kwargs)
-
-        return wrapper
-
-    return decorator_repeat
+from functools import wraps
 
 
-# Applying the factory with an argument
+def check_temp(arg, arg2):
+    # decorator factory -> decorator function that takes an arguement
+    def decorator(func):
+
+        @wraps(func)
+        def wrap(x):
+            print(f"{x} {arg}")
+
+            if x <= arg:
+                if func.__name__ == "cold":
+                    func(x)
+                else:
+                    print("It's hot not cold")
+
+            if x >= arg:
+                if func.__name__ == "hot":
+                    func(x)
+                else:
+                    print("It's cold not hot")
+
+        return wrap
+
+    return decorator
 
 
-def greet(name):
-    print(f"Hello, {name}!")
+@check_temp(-1, 12)
+def cold(x):
+    print("Cold ")
 
 
-test = repeat_message(3)
-test2 = test(greet)
-print(test2("dh"))
+@check_temp(1)
+def hot(x):
+    print("Hot")
+
+
+# cold = check_temp(-1)(cold)
+# cold(1)
+print(cold(-1))
+print(hot(-1))
