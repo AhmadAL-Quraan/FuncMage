@@ -1,6 +1,9 @@
+from typing import Any
+
+
 def artifact_sorter(
     artifacts: list[dict[str, int | str]],
-) -> list[dict[str, int | str]]:
+) -> list[dict[str, Any]]:
     return sorted(artifacts, key=lambda x: x["power"], reverse=True)
 
 
@@ -16,8 +19,8 @@ def spell_transformer(spells: list[str]) -> list[str]:
     return list(map(lambda x: f"* {x} *", spells))
 
 
-def mage_stats(mages: list[dict]) -> dict:
-    results: dict = {}
+def mage_stats(mages: list[dict[str, int]]) -> dict[str, int]:
+    results: dict[str, Any] = {}
     results["max_power"] = sorted(
         mages, key=lambda x: x["power"], reverse=True
     )[0]["power"]

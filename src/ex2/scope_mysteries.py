@@ -33,12 +33,12 @@ def enchantment_factory(enchantment_type: str) -> Callable[[str], str]:
 
 # ... any parameter returns anything
 def memory_vault() -> dict[str, Callable[..., Any]]:
-    dic: dict = {}
+    dic: dict[str, Callable[..., Any]] = {}
 
-    def store(key: str, value: Any):
+    def store(key: str, value: Any) -> None:
         dic[key] = value
 
-    def recall(key: str):
+    def recall(key: str) -> Any:
         try:
             return dic[key]
         except Exception as e:

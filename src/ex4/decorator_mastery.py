@@ -4,11 +4,10 @@ import time
 
 
 # What is decorator in python ???????????????????????????///////// function -> take a function and return a function
-def spell_timer(func: Callable) -> Callable:
+def spell_timer(func: Callable[[], str]) -> Callable[[], str]:
     @wraps(func)
-    def wrapper(arg1):
+    def wrapper() -> str:
         print(f"Casting {func.__name__}")
-        print(arg1)
         start = time.perf_counter()
         result = func()
         end = time.perf_counter()
@@ -19,20 +18,21 @@ def spell_timer(func: Callable) -> Callable:
 
 
 @spell_timer
-def fireball():
+def fireball() -> str:
     time.sleep(0.101)
-    return "Boom"
+    return "Fireball cast!"
 
 
 # A decorator factory: is an outter decorator that takes arguments to pass it to the actual one
 def power_validator(
     min_power: int,
-) -> Callable[[Callable[[int], int]], Callable[[int], int | str]]:
-    def decorator(func: Callable[[int], int]) -> Callable[[int], int | str]:
+) -> Callable:
+    def decorator(func: Callable) -> Callable:
         @wraps(func)
-        def wrapper(power: int) -> int | str:
+        def wrapper(*args) -> int | str:
+            power = args[-1]
             if power > min_power:
-                return func(power)
+                return func(*args)
             else:
                 return "Insufficient power for this spell"
 
@@ -43,8 +43,8 @@ def power_validator(
 
 def retry_spell(
     max_attempts: int,
-) -> Callable[[Callable[[], None]], Callable[[], None]]:
-    def decorator(func: Callable[[], None]) -> Callable[[], None]:
+) -> Callable:
+    def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper() -> None:
             for i in range(1, max_attempts + 1):
@@ -82,8 +82,6 @@ class MageGuild:
     def cast_spell(self, spell_name: str, power: int) -> str:
         return f"Successfully cast {spell_name} with {power} power"
 
-    cast_spell = power_validator(10)(cast_spell)
-
 
 @power_validator(40)
 def test_power(x: int) -> int:
@@ -95,6 +93,27 @@ def test_power2(x: int) -> int:
     return x * x
 
 
+@retry_spell(3)
+def test_retry():
+    raise ValueError()
+
+
+@retry_spell(3)
+def test_retry2():
+    return "Spelled!"
+
+
 if __name__ == "__main__":
+    print("Testing spell timer...")
+    print(fireball())
     print(test_power(4))
     print(test_power2(55))
+    print("\nTesting retrying spell...")
+    test_retry()
+    print(test_retry2())
+    print("\nTesting MageGuild...")
+    print(MageGuild.validate_mage_name("fdd "))
+    print(MageGuild.validate_mage_name("fdd& "))
+    obj = MageGuild()
+    print(obj.cast_spell("fire", 11))
+    print(obj.cast_spell("fire", 9))

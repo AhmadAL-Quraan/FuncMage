@@ -60,13 +60,15 @@ def spell_sequence(
 
 
 if __name__ == "__main__":
+    print("Testing spell combiner...")
     combo = spell_combiner(fireball, heal)
     resu: tuple[str, str] = combo("Dragon", 56)
     print(f"Combined spell result: {resu[0]}, {resu[1]}")
-    print("Testing power amplifier...")
+    print("\nTesting power amplifier...")
     new_spell = power_amplifier(fireball, 10)
     print(f"Original: {fireball('Dragon', 10)}, Amplified:\
 {new_spell('Dragon', 10)}")
+    print()
     condition = conditional_caster(test_condition, fireball)
     print(f"condition failed: {condition("Dragon", 30)}")
     print(f"Condition success: {condition("Dragon", 50)}")

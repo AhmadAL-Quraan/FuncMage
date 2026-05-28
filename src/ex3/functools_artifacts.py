@@ -19,13 +19,13 @@ def spell_reducer(spells: list[int], operation: str) -> int:
     return 0
 
 
-def partial(power: int, element: str, target: str):
+def partial(power: int, element: str, target: str) -> str:
     return f"{element} enchantment with power {power} cast on {target}"
 
 
 def partial_enchanter(
     base_enchantment: Callable[[int, str, str], str],
-) -> dict[str, Callable]:
+) -> dict[str, Callable[..., str]]:
     return {
         "fire": functools.partial(base_enchantment, 50, "fire"),
         "ice": functools.partial(base_enchantment, 50, "ice"),
@@ -72,14 +72,13 @@ def spell_dispatcher() -> Callable[[Any], str]:
         return f"Enchantment: {data}"
 
     @handle.register
-    def _(data: list) -> str:
+    def _(data: list[str]) -> str:
         return f"Multi-cast: {len(data)} spells"
 
     return handle
 
 
 if __name__ == "__main__":
-    l = [1, 3, 4, 5]
     print("Testing spell reducer...")
     spells = [1, 2, 3, 4, 5, 6, 6, 7, 8, 8, 10]
     print(f"Sum: {spell_reducer(spells,"add")}")
