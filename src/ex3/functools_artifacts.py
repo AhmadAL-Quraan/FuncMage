@@ -4,7 +4,8 @@ from collections.abc import Callable
 import functools
 
 
-# reduce the values into one value by applying some function one by one on values
+# reduce the values into one value
+# by applying some function one by one on values
 def spell_reducer(spells: list[int], operation: str) -> int:
     if operation == "add":
         return reduce(lambda x, y: x + y, spells)
@@ -81,9 +82,9 @@ def spell_dispatcher() -> Callable[[Any], str]:
 if __name__ == "__main__":
     print("Testing spell reducer...")
     spells = [1, 2, 3, 4, 5, 6, 6, 7, 8, 8, 10]
-    print(f"Sum: {spell_reducer(spells,"add")}")
-    print(f"Product: {spell_reducer(spells,"multiply")}")
-    print(f"Max: {spell_reducer(spells,"max")}")
+    print(f"Sum: {spell_reducer(spells, "add")}")
+    print(f"Product: {spell_reducer(spells, "multiply")}")
+    print(f"Max: {spell_reducer(spells, "max")}")
     print()
     print("Testing memoized fibonacci...")
     print(f"Fib(0): {memoized_fibonacci(0)}")
@@ -97,6 +98,6 @@ if __name__ == "__main__":
     func = spell_dispatcher()
     print(func(42))
     print(func("fireball"))
-    l = ["one", "two", "three"]
-    print(func(l))
+    numbers = ["one", "two", "three"]
+    print(func(numbers))
     print(func(3.45))

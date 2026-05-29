@@ -4,7 +4,8 @@ import time
 from typing import Any
 
 
-# What is decorator in python ???????????????????????????///////// function -> take a function and return a function
+# What is decorator in python ?
+#    function -> take a function and return a function
 def spell_timer(func: Callable[[], str]) -> Callable[[], str]:
     @wraps(func)
     def wrapper() -> str:
@@ -24,16 +25,17 @@ def fireball() -> str:
     return "Fireball cast!"
 
 
-# A decorator factory: is an outter decorator that takes arguments to pass it to the actual one
+# A decorator factory:
+# is an outter decorator that takes arguments to pass it to the actual one
 def power_validator(
     min_power: int,
 ) -> Callable[..., Any]:
-    def decorator(func: Callable) -> Callable:
+    def decorator(func: Callable[..., str | int]) -> Callable[..., Any]:
         @wraps(func)
-        def wrapper(*args) -> int | str:
+        def wrapper(*args: int) -> int | str:
             power = args[-1]
             if power > min_power:
-                return func(*args)
+                return func(args)
             else:
                 return "Insufficient power for this spell"
 
@@ -44,8 +46,8 @@ def power_validator(
 
 def retry_spell(
     max_attempts: int,
-) -> Callable:
-    def decorator(func: Callable) -> Callable:
+) -> Callable[..., Any]:
+    def decorator(func: Callable[..., None]) -> Callable[..., Any]:
         @wraps(func)
         def wrapper() -> None:
             for i in range(1, max_attempts + 1):
@@ -53,13 +55,11 @@ def retry_spell(
                     return func()
                 except Exception:
                     if i < max_attempts:
-                        print(
-                            f"Spell failed, retrying... (attempt {i}/{max_attempts})"
-                        )
+                        print(f"Spell failed, retrying...\
+(attempt {i}/{max_attempts})")
                     else:
-                        print(
-                            f"Spell casting failed after {max_attempts} attempts"
-                        )
+                        print(f"Spell casting failed after\
+{max_attempts} attempts")
 
         return wrapper
 
@@ -77,7 +77,7 @@ class MageGuild:
             if not ("a" <= i <= "z" or i == " "):
                 valid_char = False
 
-        return True if valid_char == True and valid_length == True else False
+        return True if valid_char is True and valid_length is True else False
 
     @power_validator(10)
     def cast_spell(self, spell_name: str, power: int) -> str:
@@ -95,12 +95,12 @@ def test_power2(x: int) -> int:
 
 
 @retry_spell(3)
-def test_retry():
+def test_retry() -> None:
     raise ValueError()
 
 
 @retry_spell(3)
-def test_retry2():
+def test_retry2() -> str:
     return "Spelled!"
 
 

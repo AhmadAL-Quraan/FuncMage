@@ -41,8 +41,8 @@ def memory_vault() -> dict[str, Callable[..., Any]]:
     def recall(key: str) -> Any:
         try:
             return dic[key]
-        except Exception as e:
-            return f"Memory not found"
+        except Exception:
+            return "Memory not found"
 
     return {"store": store, "recall": recall}
 
@@ -68,6 +68,6 @@ if __name__ == "__main__":
     print(ench("Shield"))
     print("\nTesting memory vault...")
     mapp = memory_vault()
-    print(f"Store `secret` = 42 {mapp["store"]("secret",42)}")
+    print(f"Store `secret` = 42 {mapp["store"]("secret", 42)}")
     print(f"Recall `secret`: {mapp["recall"]("secret")}")
     print(f"Recall `unknown`: {mapp["recall"]("unknown")}")
