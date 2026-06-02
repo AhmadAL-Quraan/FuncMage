@@ -35,7 +35,7 @@ def power_validator(
         def wrapper(*args: int) -> int | str:
             power = args[-1]
             if power > min_power:
-                return func(args)
+                return func(*args)
             else:
                 return "Insufficient power for this spell"
 
