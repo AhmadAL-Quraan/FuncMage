@@ -72,6 +72,8 @@ def spell_dispatcher() -> Callable[[Any], str]:
     def _(data: str) -> str:
         return f"Enchantment: {data}"
 
+    # singledispatch requires concrete runtime class
+
     @handle.register
     def _(data: list) -> str:
         return f"Multi-cast: {len(data)} spells"

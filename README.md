@@ -247,6 +247,8 @@ CacheInfo(hits=38, misses=41, maxsize=None, currsize=41)
 ## singledispatch()
 
 Function overloading based on argument type.
+> This decorator evaluates type hints at runtime.
+> Static type annotations like list[Any] or list[int] are generic aliases used by static tools (like Mypy or Pylance). However, at runtime, standard library features like singledispatch look for a direct, plain class (e.g., list or dict) to map logic to.
 
 Example:
 
@@ -266,7 +268,7 @@ def _(obj: str):
     return f"Enchantment: {obj}"
 
 @spell.register
-def _(obj: list):
+def _(obj: list): # -> You can't say here list[str] or list[int] because "singledispatch" uses only general classes
     return f"Multi-cast: {len(obj)} spells"
 ```
 
